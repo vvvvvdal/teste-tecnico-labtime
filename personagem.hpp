@@ -7,5 +7,4 @@
 #include "inventario.hpp"
 using namespace std;
 
-
 #endif

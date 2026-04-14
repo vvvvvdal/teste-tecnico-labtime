@@ -3,8 +3,9 @@
 #ifndef ITEM_HPP
 #define ITEM_HPP
 
-#define EMPILHAVEL true
-#define NAO_EMPILHAVEL false
+#define EMPILHAVEL 0
+#define NAO_EMPILHAVEL 1
+#define TIPO_INVALIDO -1
 #define TAM_MAX_UNICO 1
 #define TAM_MAX_PILHA 64
 #define TAM_NULO 0
@@ -18,23 +19,17 @@ using namespace std;
 class Item {
 private:
     string nome;
-    bool empilhavel;
+    short int tipo;
     int qtd;
     int tam_max;
 public:
     Item();
-    Item(string nome, bool empilhavel, int qtd, int tam_max);
+    Item(string nome, short int tipo, int qtd, int tam_max);
     string get_nome();
-    bool get_empilhavel();
+    short int get_tipo();
     int get_qtd();
 
     void set_qtd(int quantidade);
-};
-
-class Itens{
-public:
-    array<Item,6> itens;
-    Itens();
 };
 
 #endif
