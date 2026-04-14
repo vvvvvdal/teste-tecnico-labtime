@@ -4,8 +4,11 @@
 #define INVENTARIO_HPP
 
 #define TAM_MAX_INVENTARIO 10
-#define OCUPADO true
-#define DESOCUPADO false
+
+#define OCUPADO 1
+#define DESOCUPADO 0
+#define POSICAO_INVALIDA 1
+#define POSICAO_VALIDA 0
 
 #include <iostream>
 #include <array>
@@ -19,15 +22,21 @@ void verificar_ocupado_inventario(int &posicao);
 class Inventario{
 private:
     array<Item,TAM_MAX_INVENTARIO> slots;
-    array<bool,TAM_MAX_INVENTARIO> ocupado;
+    array<int,TAM_MAX_INVENTARIO> ocupado;
     Itens itens_inventario;
-public:
-    bool verificar_posicao(int &posicao);
-    bool verificar_ocupado(int &posicao);
-    void formatar_nome(string &nome);
 
+    short int verificar_ocupado(int posicao);
+    short int verificar_posicao(int posicao);
+    void formatar_nome(string &nome);
+    void formatar_posicao(int &posicao);
+
+    Item buscar_item(string nome);
+    int encontrar_slot_vazio();
+    void set_slot(int posicao, Item &item);
+    void distribuir_sobra(Item &item_base, int sobra);
+    int acrescenta_item_empilhavel_qtd();
+public:
     void print_inventario();
-    void acrescenta_item_empilhavel(Item &novo_item);
     void adicionar_item(int posicao, string nome);
     void remover_item(int posicao);
     void trocar_item(int posicao1, int posicao2);
