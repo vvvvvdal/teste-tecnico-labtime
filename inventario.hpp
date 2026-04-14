@@ -3,8 +3,6 @@
 #ifndef INVENTARIO_HPP
 #define INVENTARIO_HPP
 
-#define TAM_MAX_INVENTARIO 10
-
 #define OCUPADO 1
 #define DESOCUPADO 0
 #define POSICAO_INVALIDA 1
@@ -12,7 +10,8 @@
 #define SLOT_INVALIDO -1
 
 #include <iostream>
-#include <array>
+#include <vector>
+#include <cstring>
 #include "auxiliares.hpp"
 #include "item.hpp"
 #include "itens.hpp"
@@ -20,26 +19,28 @@ using namespace std;
 
 class Inventario{
 private:
-    array<Item,TAM_MAX_INVENTARIO> slots;
-    array<int,TAM_MAX_INVENTARIO> ocupado;
+    vector<Item> slots;
+    vector<int> ocupado;
     Itens itens_inventario;
+    int tam_max_inventario;
 
     short int verificar_posicao(int posicao);
     short int verificar_ocupado(int posicao);
     void formatar_nome(string &nome);
     void formatar_posicao(int &posicao);
-
+    void verificar_qtd_negativa(Item &item, int posicao,int qtd);
+    
     Item buscar_item(string nome);
     int encontrar_slot_vazio();
     void set_slot(int posicao, Item &item);
     void distribuir_sobra(Item &item_base, int sobra);
     void esvaziar_slot(int posicao);
+
 public:
-    Inventario();
-    
+    Inventario(int tam_max_inventario);
     void print_inventario();
-    void adicionar_item(int posicao, string nome);
-    void remover_item(int posicao);
+    void adicionar_item(string nome, int qtd);
+    void remover_item(int posicao, int qtd);
     void trocar_item(int posicao1, int posicao2);
 };
 

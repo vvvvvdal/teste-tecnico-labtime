@@ -9,5 +9,6 @@ using namespace std;
 
 void limpar_buffer_entrada();
 int get_inteiro();
+int get_tam_max_inventario();
 
 #endif

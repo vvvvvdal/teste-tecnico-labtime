@@ -4,7 +4,7 @@
 
 short int Inventario::verificar_posicao(int posicao) {
     if(posicao < 0 || posicao > 9) {
-        cout<<"Posicao invalida"<<endl;
+        cout<<endl<<"Posicao invalida"<<endl;
         return POSICAO_INVALIDA;
     }
 
@@ -29,6 +29,18 @@ void Inventario::formatar_posicao(int &posicao) {
     posicao -= 1;
 }
 
+void Inventario::verificar_qtd_negativa(Item &item, int posicao, int qtd) {
+    if(qtd >= 0) return;
+
+    string palavra_tipo = (item.get_tipo() == EMPILHAVEL) ? "empilhaveis" : "nao empilhaveis";
+    string palavra_qtd = (item.get_tipo() == EMPILHAVEL) ? "de 0 a 64 unidades" : "so 1 unidade";
+
+    cout<<endl<<"Quantidade "<<qtd<<" invalida para remover do item "<<item.get_nome()<<" no slot "<<posicao+1<<"."<<endl;
+    cout<<"Itens "<<palavra_tipo<<" (como "<<item.get_nome()<< ") possuem "<<palavra_qtd<<" de quantidade em um slot."<<endl;
+    cout<<"Nao eh possivel remover uma quantidade maior que a quantidade existente ou quantidade negativa. Operacao nao realizada."<<endl;
+
+}
+
 Item Inventario::buscar_item(string nome) {
     for(int i=0; i<QTD_ITENS; i++) {
         if(nome == itens_inventario.itens[i].get_nome()) {
@@ -40,7 +52,7 @@ Item Inventario::buscar_item(string nome) {
 }
 
 int Inventario::encontrar_slot_vazio() {
-    for(int i=0; i<TAM_MAX_INVENTARIO; i++) {
+    for(int i=0; i<tam_max_inventario; i++) {
         if(ocupado[i] == DESOCUPADO) {
             return i;
         }
@@ -59,24 +71,32 @@ void Inventario::distribuir_sobra(Item &item_base, int sobra) {
         int posicao_livre = encontrar_slot_vazio();
 
         if(posicao_livre == SLOT_INVALIDO) {
-            cout<<"Inventario cheio. Sobrou "<<sobra<<" e isso foi descartado"<<endl;
+            cout<<endl<<"Inventario cheio. Sobrou "<<sobra<<" unidades do item "<<item_base.get_nome()<<" e isso foi descartado"<<endl;
             break;
         }
 
         Item item_parte = item_base;
 
-        if (sobra > TAM_MAX_PILHA) {
-            item_parte.set_qtd(TAM_MAX_PILHA);
-            set_slot(posicao_livre, item_parte);
-            sobra -= TAM_MAX_PILHA;
+        if (item_base.get_tipo() == EMPILHAVEL) {
+            if (sobra > TAM_MAX_PILHA) {
+                item_parte.set_qtd(TAM_MAX_PILHA);
+                set_slot(posicao_livre, item_parte);
+                sobra -= TAM_MAX_PILHA;
 
-            cout<<"Item: " <<item_base.get_nome()<<", Qtd: "<<TAM_MAX_PILHA<< " adicionado ao slot "<<posicao_livre+1<< endl;
+                cout<<endl<<"Item: "<<item_base.get_nome()<<", Qtd: "<<TAM_MAX_PILHA<<" adicionado ao slot "<<posicao_livre+1<<endl;
+            } else {
+                item_parte.set_qtd(sobra);
+                set_slot(posicao_livre, item_parte);
+
+                cout<<endl<<"Item: "<<item_base.get_nome()<<", Qtd: "<<sobra<<" adicionado ao slot "<<posicao_livre+1<<endl;
+                sobra = 0;
+            }
         } else {
-            item_parte.set_qtd(sobra);
+            item_parte.set_qtd(TAM_MAX_UNICO);
             set_slot(posicao_livre, item_parte);
-            cout<<"Item: " <<item_base.get_nome()<<", Qtd: "<<sobra<< " adicionado ao slot "<<posicao_livre+1<< endl;
 
-            sobra = 0;
+            cout<<endl<<"Item: "<<item_base.get_nome()<<", Qtd: "<<TAM_MAX_UNICO<<" adicionado ao slot "<<posicao_livre+1<<endl;
+            sobra -= 1;
         }
     }
 }
@@ -86,14 +106,13 @@ void Inventario::esvaziar_slot(int posicao){
     ocupado[posicao] = DESOCUPADO;
 }
 
-Inventario::Inventario() {
-    for(int i = 0; i < TAM_MAX_INVENTARIO; i++) {
-        ocupado[i] = DESOCUPADO;
-    }
+Inventario::Inventario(int tam_max_inventario): tam_max_inventario(tam_max_inventario) {
+    slots.resize(tam_max_inventario); 
+    ocupado.resize(tam_max_inventario, 0);
 }
 
 void Inventario::print_inventario() {
-    for(int i=0; i<TAM_MAX_INVENTARIO; i++){
+    for(int i=0; i<tam_max_inventario; i++){
 
         int tam_print;
         if(ocupado[i] == DESOCUPADO) tam_print = TAM_NULO;
@@ -107,76 +126,86 @@ void Inventario::print_inventario() {
     cout<<endl;
 }
 
-void Inventario::adicionar_item(int posicao, string nome) {
-    formatar_posicao(posicao);
+void Inventario::adicionar_item(string nome, int qtd) {
     formatar_nome(nome);
-
-    if(verificar_posicao(posicao)) return;
-    if(verificar_ocupado(posicao)) {
-        cout<<"Slot "<<posicao+1<<" esta ocupado. Escolha outro slot. Operacao nao realizada."<<endl;
-        return;
-    }
 
     Item novo_item = buscar_item(nome);
 
     if(novo_item.get_nome() == "Vazio") {
-        cout<<"Item "<<nome<<" nao existente no jogo"<<endl;
+        cout<<endl<<"Item "<<nome<<" nao existente no jogo"<<endl;
         return;
     }
 
-    int qtd = 1;
-    if(novo_item.get_tipo() == EMPILHAVEL) {
-        cout<<"Qual quantidade para adicionar? "<<endl;
-        qtd = get_inteiro();
+    if (qtd <= 0) {
+        cout<<endl<<"A quantidade deve ser maior que zero."<<endl;
+        return;
     }
 
-    if(qtd > TAM_MAX_PILHA) {
-        novo_item.set_qtd(TAM_MAX_PILHA);
-        set_slot(posicao, novo_item);
+    int sobra = qtd;
+    if (novo_item.get_tipo() == EMPILHAVEL) {
+        for(int i = 0; i < tam_max_inventario; i++) {
+            if(ocupado[i] == OCUPADO && slots[i].get_nome() == novo_item.get_nome()) {
+                int resto = TAM_MAX_PILHA - slots[i].get_qtd();
+                
+                if (resto > 0) {
+                    if (sobra <= resto) {
+                        slots[i].set_qtd(slots[i].get_qtd() + sobra);
+                        cout<<endl<<"Item: "<<nome<<", Qtd: "<<sobra<< " adicionado na pilha do slot "<<i+1<<endl;
 
-        cout<<"Item: " <<nome<<", Qtd: "<<TAM_MAX_PILHA<< " adicionado ao slot "<<posicao+1<< endl;
+                        sobra = 0;
+                        break;
+                    } else {
+                        slots[i].set_qtd(TAM_MAX_PILHA);
+                        cout<<endl<<"Item: "<<nome<<", Qtd: "<<sobra<< " adicionado na pilha do slot "<<i+1<<endl;
+                        
+                        sobra -= resto;
+                    }
+                }
+            }
+        }
+    }
 
-        distribuir_sobra(novo_item, (qtd - TAM_MAX_PILHA));
-    } else {
-        novo_item.set_qtd(qtd);
-        set_slot(posicao, novo_item);
-
-        cout<<"Item: " <<nome<<", Qtd: "<<qtd<< " adicionado ao slot "<<posicao+1<< endl;
+    if (sobra > 0) {
+        distribuir_sobra(novo_item, sobra);
     }
 }
 
-void Inventario::remover_item(int posicao) {
+void Inventario::remover_item(int posicao, int qtd) {
     formatar_posicao(posicao);
 
     if(verificar_posicao(posicao)) return;
     if(!verificar_ocupado(posicao)){
-        cout<<"Slot "<<posicao+1<<" vazio. Não é possível remover um item de um slot vazio"<<endl;
+        cout<<endl<<"Slot "<<posicao+1<<" vazio. Não é possível remover um item de um slot vazio"<<endl;
         return;
     }
 
-    int qtd = 1;
     if(slots[posicao].get_tipo() == EMPILHAVEL){
-        cout<<"Qual a quantidade para remover? "<<endl;
-        qtd = get_inteiro();
 
         if(qtd == slots[posicao].get_qtd()) {
-            cout<<"Quantidade "<<qtd<<" removida do item "<<slots[posicao].get_nome()<< " no slot "<<posicao+1<<"."<<endl;
+            cout<<endl<<"Quantidade "<<qtd<<" removida do item "<<slots[posicao].get_nome()<< " no slot "<<posicao+1<<"."<<endl;
             cout<<"Agora esse slot esta vazio."<<endl;
 
             esvaziar_slot(posicao);
-        } else if(qtd > slots[posicao].get_qtd()) {
-            cout<<"Quantidade "<<qtd<<" maior que a quantidade atual "<<slots[posicao].get_qtd()<< " do item "<<slots[posicao].get_nome()<<" no slot "<<posicao+1<<"."<<endl;
-            cout<<"Nao eh possivel remover mais que a quantidade existente. Operacao nao realizada."<<endl;
+
+        } else if(qtd > slots[posicao].get_qtd() || qtd < 0) {
+            verificar_qtd_negativa(slots[posicao], posicao, qtd);
 
             return;
+
         } else {
             slots[posicao].set_qtd((slots[posicao].get_qtd()-qtd));
 
-            cout<<"Quantidade "<<qtd<<" removida do item "<<slots[posicao].get_nome()<< " no slot "<<posicao+1<<"."<<endl;
+            cout<<endl<<"Quantidade "<<qtd<<" removida do item "<<slots[posicao].get_nome()<< " no slot "<<posicao+1<<"."<<endl;
             cout<<"Quantidade atual: "<<slots[posicao].get_qtd()<<endl;
         }
     } else {
-        cout<<"Item "<<slots[posicao].get_nome()<<" removido do slot "<<posicao+1<<"."<<endl;
+        if(qtd == TAM_MAX_UNICO) {
+            cout<<endl<<"Item "<<slots[posicao].get_nome()<<" removido do slot "<<posicao+1<<"."<<endl;
+        } else {
+            verificar_qtd_negativa(slots[posicao], posicao, qtd);
+
+            return;
+        }
 
         esvaziar_slot(posicao);
     }
@@ -198,20 +227,21 @@ void Inventario::trocar_item(int posicao1, int posicao2) {
 
         esvaziar_slot(posicao2);
 
-        cout<<"Item "<<slots[posicao1].get_nome()<<" trocado para a posicao"<<posicao1+1<<endl;
+        cout<<endl<<"Item "<<slots[posicao1].get_nome()<<" do slot "<<posicao2+1<<" trocado para o slot"<<posicao1+1<<endl;
 
-    } else if(verificar_ocupado(posicao1) && !verificar_ocupado(posicao2)) {// 1 ocupado e 2 vazio
+    } else if(verificar_ocupado(posicao1) && !verificar_ocupado(posicao2)) { // 1 ocupado e 2 vazio
         slots[posicao2] = slots[posicao1];
         ocupado[posicao2] = OCUPADO;
         esvaziar_slot(posicao1);
 
-        cout<<"Item "<<slots[posicao2].get_nome()<<" trocado para a posicao"<<posicao2+1<<endl;
+        cout<<endl<<"Item "<<slots[posicao1].get_nome()<<" do slot "<<posicao1+1<<" trocado para o slot"<<posicao2+1<<endl;
 
     } else {
         Item temp = slots[posicao1];
         slots[posicao1] = slots[posicao2];
         slots[posicao2] = temp;
-        
-        cout<<"Item "<<slots[posicao1].get_nome()<<" trocado com o item "<<slots[posicao2].get_nome()<<endl;
+
+        cout<<endl<<"Item "<<slots[posicao1].get_nome()<<" do slot "<<posicao2+1<<" trocado com o item "<<slots[posicao2].get_nome()<<" do slot "<<posicao1+1<<endl;
+        cout<<"Agora o item "<<slots[posicao1].get_nome()<<" esta no slot "<<posicao1+1<<" e o item " <<slots[posicao2].get_nome()<<" esta no slot "<<posicao2+1<<endl;
     }
 }

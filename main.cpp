@@ -1,14 +1,16 @@
 #include <iostream>
-#include "inventario.hpp"
+#include "personagem.hpp"
 using namespace std;
 
 int main() {
-    Inventario inv;
-    inv.adicionar_item(1, "espada");
-    inv.adicionar_item(3, "flecha");
-    inv.trocar_item(1,3);
+    int tam_max_inv = get_tam_max_inventario();
+    Personagem felipe("Felipe", tam_max_inv);
+    
+    felipe.inventario.adicionar_item("Flecha", 64);
+    felipe.inventario.remover_item(1, 20);
+    felipe.inventario.remover_item(1,-10);
 
-    inv.print_inventario();
+    felipe.inventario.print_inventario();
 
     return 0;
 }
