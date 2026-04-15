@@ -11,7 +11,7 @@ int ler_inteiro() {
     int qtd;
     
     while(true) {
-        cin >> entrada;
+        getline(cin, entrada);
         
         if (entrada.length() > TAM_MAX_DIGITOS) {
             cout<<endl<<"Numero muito grande." << endl;
@@ -69,7 +69,7 @@ string ler_nome() {
 
     while(true) {
         cout<<"Digite o nome: ";
-        cin>>nome;
+        getline(cin, nome);
 
         if(nome.length() > TAM_MAX_NOME) {
             cout<<endl<<"Nome muito grande."<<endl;
