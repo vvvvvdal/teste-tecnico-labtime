@@ -6,14 +6,14 @@ void limpar_buffer_entrada() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-int get_inteiro() {
+int ler_inteiro() {
     string entrada;
     int qtd;
     
     while(true) {
         cin >> entrada;
         
-        if (entrada.length() > 9) {
+        if (entrada.length() > TAM_MAX_DIGITOS) {
             cout<<endl<<"Numero muito grande." << endl;
             cout<<"Digite novamente."<<endl;
             limpar_buffer_entrada();
@@ -40,18 +40,59 @@ int get_inteiro() {
     }
 }
 
-int get_tam_max_inventario() {
+int ler_tam_max_inventario() {
     int tamanho;
     
     while(true) {
-        cout<<"Digite o tamanho maximo do inventario (min 6 max 1000): ";
-        tamanho = get_inteiro();
+        cout<<"Digite o tamanho maximo do inventario (min "<<TAM_MIN_INVENTARIO<<", max "<<TAM_MAX_INVENTARIO<<"): ";
+        tamanho = ler_inteiro();
         
-        if(tamanho >= 6 && tamanho <= 1000) break;
+        if(tamanho >= TAM_MIN_INVENTARIO && tamanho <= TAM_MAX_INVENTARIO) break;
 
-        cout<<endl<<"O tamanho minimo eh 6 e o maximo eh 1000."<<endl;
+        cout<<endl<<"O tamanho minimo eh "<<TAM_MIN_INVENTARIO<<" e o maximo eh "<<TAM_MAX_INVENTARIO<<"."<<endl;
         cout<<"Digite novamente."<<endl;
     }
 
     return tamanho;
+}
+
+void formatar_nome(string &nome) {
+    for(char &c: nome) {
+        c = tolower(c);
+    }
+
+    nome[0] = toupper(nome[0]);
+}
+
+string ler_nome() {
+    string nome;
+
+    while(true) {
+        cout<<"Digite o nome: ";
+        cin>>nome;
+
+        if(nome.length() > TAM_MAX_NOME) {
+            cout<<endl<<"Nome muito grande."<<endl;
+            cout<<"Digite novamente."<<endl;
+            limpar_buffer_entrada();
+        }
+
+        bool eh_palavra = true;
+
+        for(char c: nome) {
+            if(!isalpha(c)) {
+                cout<<endl<<"Somente letras sao permitidas no nome."<<endl;
+                cout<<"Digite novamente."<<endl;
+                limpar_buffer_entrada();
+
+                eh_palavra = false;
+                break;
+            }
+        }
+
+        if(eh_palavra) {
+            formatar_nome(nome);
+            return nome;
+        }
+    }
 }
