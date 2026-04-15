@@ -12,8 +12,10 @@ private:
     string nome;
 
 public:
-    Personagem(string nome, int tam_max_inv);
     Inventario inventario;
+
+    Personagem(string nome, int tam_max_inv);
+    void print_inventario_personagem();
 };
 
 #endif
