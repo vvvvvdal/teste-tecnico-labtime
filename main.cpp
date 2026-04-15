@@ -3,14 +3,13 @@
 using namespace std;
 
 int main() {
-    int tam_max_inv = get_tam_max_inventario();
-    Personagem felipe("Felipe", tam_max_inv);
+    Personagem felipe(ler_nome(), ler_tam_max_inventario());
     
     felipe.inventario.adicionar_item("Flecha", 64);
     felipe.inventario.remover_item(1, 20);
     felipe.inventario.remover_item(1,-10);
 
-    felipe.inventario.print_inventario();
+    felipe.print_inventario_personagem();
 
     return 0;
 }
