@@ -17,14 +17,6 @@ short int Inventario::verificar_ocupado(int posicao) {
     return DESOCUPADO;
 }
 
-void Inventario::formatar_nome(string &nome) {
-    for(char &c: nome) {
-        c = tolower(c);
-    }
-
-    nome[0] = toupper(nome[0]);
-}
-
 void Inventario::formatar_posicao(int &posicao) {
     posicao -= 1;
 }
