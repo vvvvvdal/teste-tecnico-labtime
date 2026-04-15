@@ -26,7 +26,6 @@ private:
 
     short int verificar_posicao(int posicao);
     short int verificar_ocupado(int posicao);
-    void formatar_nome(string &nome);
     void formatar_posicao(int &posicao);
     void verificar_qtd_negativa(Item &item, int posicao,int qtd);
     
