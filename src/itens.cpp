@@ -1,5 +1,6 @@
-#include "itens.hpp"
+#include "../include/itens.hpp"
 
+// construtor padrao: inicializa os 6 itens existentes no programa
 Itens::Itens() {
     itens[0] = Item("Espada", NAO_EMPILHAVEL, QTD_NULA, TAM_MAX_UNICO);
     itens[1] = Item("Escudo", NAO_EMPILHAVEL, QTD_NULA, TAM_MAX_UNICO);

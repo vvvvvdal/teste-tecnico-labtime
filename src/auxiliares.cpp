@@ -1,11 +1,12 @@
-#include "auxiliares.hpp"
+#include "../include/auxiliares.hpp"
+using namespace std;
 
-void limpar_buffer_entrada() {
-    cin.clear(); 
-    
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+// formata a posicao do slot -> no código: 0 a tamanho do inventario, na execução do usuario: 1 a tamanho do inventario
+void formatar_posicao(int &posicao) {
+    posicao -= 1;
 }
 
+// lê um inteiro. repete a leitura se for um tipo diferente de inteiro (char, string, float)
 int ler_inteiro() {
     string entrada;
     int qtd;
@@ -16,7 +17,8 @@ int ler_inteiro() {
         if (entrada.length() > TAM_MAX_DIGITOS) {
             cout<<endl<<"Numero muito grande." << endl;
             cout<<"Digite novamente."<<endl;
-            limpar_buffer_entrada();
+
+            continue;
         }
 
         bool eh_int = true;
@@ -29,17 +31,16 @@ int ler_inteiro() {
         
         if(eh_int) {
             qtd = stoi(entrada);
-            limpar_buffer_entrada();
 
             return qtd;
         } else {
             cout<<endl<<"O numero digitado foi invalido. Deve ser digitado um numero inteiro maior que 0."<<endl;
             cout<<"Digite novamente."<<endl;
-            limpar_buffer_entrada();
         }
     }
 }
 
+// lê o tamanho maximo do inventario. minimo de TAM_MIN_INVENTARIO e maximo de TAM_MAX_INVENTARIO
 int ler_tam_max_inventario() {
     int tamanho;
     
@@ -56,14 +57,15 @@ int ler_tam_max_inventario() {
     return tamanho;
 }
 
+// formata o nome para o modelo: primeira letra de cada palavra maiusculo e o resto minusculo
 void formatar_nome(string &nome) {
-    for(char &c: nome) {
-        c = tolower(c);
+    for(int i=0; i<nome.length(); i++) {
+        if(i == 0 || nome[i-1] == ' ') nome[i] = toupper(nome[i]);
+        else nome[i] = tolower(nome[i]);
     }
-
-    nome[0] = toupper(nome[0]);
 }
 
+// lê um nome. repete a leitura se for um tipo diferente de letras (char de 'A' a 'Z' e 'a' a 'z')
 string ler_nome() {
     string nome;
 
@@ -74,16 +76,17 @@ string ler_nome() {
         if(nome.length() > TAM_MAX_NOME) {
             cout<<endl<<"Nome muito grande."<<endl;
             cout<<"Digite novamente."<<endl;
-            limpar_buffer_entrada();
+        } else if(nome.length() < TAM_MIN_NOME) {
+            cout<<endl<<"Nome muito pequeno."<<endl;
+            cout<<"Digite novamente."<<endl;
         }
 
         bool eh_palavra = true;
 
         for(char c: nome) {
-            if(!isalpha(c)) {
+            if(!isalpha(c) && c != ' ') {
                 cout<<endl<<"Somente letras sao permitidas no nome."<<endl;
                 cout<<"Digite novamente."<<endl;
-                limpar_buffer_entrada();
 
                 eh_palavra = false;
                 break;

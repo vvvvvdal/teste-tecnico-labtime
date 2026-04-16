@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef ITEM_HPP
-#define ITEM_HPP
-
 #define EMPILHAVEL 0
 #define NAO_EMPILHAVEL 1
 #define TIPO_INVALIDO -1
@@ -14,22 +11,19 @@
 
 #include <iostream>
 #include <array>
-using namespace std;
 
 class Item {
 private:
-    string nome;
-    short int tipo;
+    std::string nome;
+    short int tipo; // empilhavel ou nao empilhavel
     int qtd;
-    int tam_max;
+    int tam_max; // 64 se for empilhavel ou 1 se for nao empilhavel
 public:
     Item();
-    Item(string nome, short int tipo, int qtd, int tam_max);
-    string get_nome();
+    Item(std::string nome, short int tipo, int qtd, int tam_max);
+    std::string get_nome();
     short int get_tipo();
     int get_qtd();
 
     void set_qtd(int quantidade);
 };
-
-#endif

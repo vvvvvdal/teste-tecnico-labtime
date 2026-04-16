@@ -2,10 +2,9 @@
 
 #include <array>
 #include "item.hpp"
-using namespace std;
 
 class Itens{
 public:
-    array<Item,6> itens;
+    std::array<Item,6> itens; // array dos 6 itens existentes no programa
     Itens();
 };
