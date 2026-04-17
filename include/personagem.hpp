@@ -7,9 +7,11 @@
 class Personagem {
 private:
     std::string nome;
-    static int qtd_personagens;
-public:
     Inventario inventario;
+    
+    static int qtd_personagens;
+
+public:
     Personagem(std::string nome, int tam_max_inv);
 
     static int get_qtd_personagens();
@@ -21,5 +23,5 @@ public:
     void remover_item_inventario(int posicao, int qtd);
     void trocar_itens_inventario(int posicao1, int posicao2);
 
-    static void trocar_itens_inventario_entre_personagens(Personagem &pers1, Personagem &pers2);
+    static void trocar_itens_inventario_entre_personagens(Personagem &pers1, Personagem &pers2, int posicao1, int posicao2);
 };

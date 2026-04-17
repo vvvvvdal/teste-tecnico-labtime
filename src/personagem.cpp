@@ -62,24 +62,16 @@ void Personagem::trocar_itens_inventario(int posicao1, int posicao2){
 }
 
 // troca um item entre 2 personagens
-void Personagem::trocar_itens_inventario_entre_personagens(Personagem &pers1, Personagem &pers2) {
-    int posicao1, posicao2;
-
+void Personagem::trocar_itens_inventario_entre_personagens(Personagem &pers1, Personagem &pers2, int posicao1, int posicao2) {
     cout<<endl<<"Trocando itens entre "<<pers1.get_nome()<<" e "<<pers2.get_nome()<<":"<<endl;
-
-    cout<<"Digite o slot para troca de "<<pers1.get_nome()<<": ";
-    posicao1 = ler_inteiro();
-
-    cout<<"Digite o slot para troca de "<<pers2.get_nome()<<": ";
-    posicao2 = ler_inteiro();
 
     formatar_posicao(posicao1);
     formatar_posicao(posicao2);
 
     if(pers1.inventario.verificar_posicao(posicao1) || pers2.inventario.verificar_posicao(posicao2)) {
         cout<<"Na troca de itens entre personagens: "<<endl;
-        cout<<"Tente digitar uma posicao que esteja entre "<<TAM_MIN_INVENTARIO<<" e "<<pers1.inventario.get_tam_max_inventario()<<" para o personagem "<<pers1.get_nome()<<endl;
-        cout<<"E tente digitar uma posicao que esteja entre "<<TAM_MIN_INVENTARIO<<" e "<<pers2.inventario.get_tam_max_inventario()<<" para o personagem "<<pers2.get_nome()<<endl;
+        cout<<"Escolha uma posicao que esteja entre 1 e "<<pers1.inventario.get_tam_max_inventario()<<" para o personagem "<<pers1.get_nome()<<endl;
+        cout<<"E escolha uma posicao que esteja entre 1 e "<<pers2.inventario.get_tam_max_inventario()<<" para o personagem "<<pers2.get_nome()<<endl;
         cout<<"Operacao nao realizada."<<endl;
 
         return;
@@ -99,6 +91,8 @@ void Personagem::trocar_itens_inventario_entre_personagens(Personagem &pers1, Pe
         pers2.inventario.esvaziar_slot(posicao2); // apaga do 2
 
         cout<<"Item "<<slot_temp.item.get_nome()<<" do slot "<<posicao2+1<<" de "<<pers2.get_nome()<<" movido para o slot "<<posicao1+1<<" de "<<pers1.get_nome()<<endl;
+        cout<<"Agora o item "<<slot_temp.item.get_nome()<<" esta no slot "<<posicao1+1<<" do inventario de "<<pers1.get_nome()<<endl;
+        cout<<"e o slot "<<posicao2+1<<" do inventario de "<<pers2.get_nome()<<" esta vazio"<<endl;
 
     } else if(pers1.inventario.verificar_ocupado(posicao1) && !pers2.inventario.verificar_ocupado(posicao2)) { // 1 ocupado e 2 vazio
         slot_temp = pers1.inventario.get_slot(posicao1); // copia o item de 1 para o slot temporario
@@ -107,6 +101,8 @@ void Personagem::trocar_itens_inventario_entre_personagens(Personagem &pers1, Pe
         pers1.inventario.esvaziar_slot(posicao1); // apaga do 1
 
         cout<<"Item "<<slot_temp.item.get_nome()<<" do slot "<<posicao1+1<<" de "<<pers1.get_nome()<<" movido para o slot "<<posicao2+1<<" de "<<pers2.get_nome()<<endl;
+        cout<<"Agora o item "<<slot_temp.item.get_nome()<<" esta no slot "<<posicao2+1<<" do inventario de "<<pers2.get_nome()<<endl;
+        cout<<"e o slot "<<posicao1+1<<" do inventario de "<<pers1.get_nome()<<" esta vazio"<<endl;
 
     } else { // 1 ocupado e 2 ocupado
         slot_temp = pers1.inventario.get_slot(posicao1); // copia o item de 1 para o temp
@@ -115,7 +111,9 @@ void Personagem::trocar_itens_inventario_entre_personagens(Personagem &pers1, Pe
         pers1.inventario.set_slot(slot_aux, posicao1);  // coloca o item de 2 no slot de 1
         pers2.inventario.set_slot(slot_temp, posicao2); // coloca o item de 1 no slot de 2
 
-        cout<<"Item "<<slot_aux.item.get_nome()<<" do slot "<<posicao2+1<<" trocado com o item "<<slot_temp.item.get_nome()<<" do slot "<<posicao1+1<<endl;
-        cout<<"Agora o item "<<slot_aux.item.get_nome()<<" esta no slot "<<posicao1+1<<" e o item "<<slot_temp.item.get_nome()<<" esta no slot "<<posicao2+1<<endl;
+        // Substitua o primeiro cout do bloco 'else' por este:
+        cout<<"Item "<<slot_aux.item.get_nome()<<" do slot "<<posicao2+1<<" de "<<pers2.get_nome()<<" trocado com o item "<<slot_temp.item.get_nome()<<" do slot "<<posicao1+1<<" de "<<pers1.get_nome()<<endl;
+        cout<<"Agora o item "<<slot_aux.item.get_nome()<<" esta no slot "<<posicao1+1<<" do inventario de "<<pers1.get_nome()<<endl;
+        cout<<"e o item "<<slot_temp.item.get_nome()<<" esta no slot "<<posicao2+1<<" do inventario de "<<pers2.get_nome()<<endl;
     }
 }

@@ -10,7 +10,6 @@
 #define QTD_NULA 0
 
 #include <iostream>
-#include <array>
 
 class Item {
 private:

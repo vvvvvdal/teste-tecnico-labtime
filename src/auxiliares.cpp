@@ -13,6 +13,11 @@ int ler_inteiro() {
     
     while(true) {
         getline(cin, entrada);
+
+        if(cin.eof()) {
+            cout<<endl<<endl<<"Fim da leitura do arquivo teste.txt"<<endl;
+            exit(0); 
+        }
         
         if (entrada.length() > TAM_MAX_DIGITOS) {
             cout<<endl<<"Numero muito grande." << endl;
@@ -65,7 +70,7 @@ void formatar_nome(string &nome) {
     }
 }
 
-// lê um nome. repete a leitura se for um tipo diferente de letras (char de 'A' a 'Z' e 'a' a 'z')
+// lê um nome. repete a leitura se for um tipo diferente de letras (char de 'A' a 'Z' e 'a' a 'z'), espaço (" ") ou vírgula(",")
 string ler_nome() {
     string nome;
 
@@ -73,18 +78,28 @@ string ler_nome() {
         cout<<"Digite o nome: ";
         getline(cin, nome);
 
+        if(cin.eof()) {
+            cout<<endl<<endl<<"Fim da leitura do arquivo teste.txt"<<endl;
+            exit(0); 
+        }
+
         if(nome.length() > TAM_MAX_NOME) {
             cout<<endl<<"Nome muito grande."<<endl;
             cout<<"Digite novamente."<<endl;
+            
+            continue;
+
         } else if(nome.length() < TAM_MIN_NOME) {
             cout<<endl<<"Nome muito pequeno."<<endl;
             cout<<"Digite novamente."<<endl;
+
+            continue;
         }
 
         bool eh_palavra = true;
 
         for(char c: nome) {
-            if(!isalpha(c) && c != ' ') {
+            if(!isalpha(c) && c != ' ' && c != ',') {
                 cout<<endl<<"Somente letras sao permitidas no nome."<<endl;
                 cout<<"Digite novamente."<<endl;
 

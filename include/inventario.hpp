@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include <vector>
-#include <cstring>
 #include "auxiliares.hpp"
 #include "item.hpp"
 #include "itens.hpp"

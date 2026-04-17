@@ -7,7 +7,6 @@
 #define TAM_MAX_DIGITOS 9
 
 #include <iostream>
-#include <limits>
 
 void formatar_posicao(int &posicao);
 int ler_inteiro();
