@@ -13,7 +13,7 @@
 - O sistema também usa structs, para armazenar variáveis que precisam operar juntas (como um slot que possui item existente/vazio e ocupação ocupado/desocupado), comentários resumidos em variáveis e funções, para facilitar entendimento, e definições de constantes globais, para melhor entendimento e visualização do código.
 - Além disso, organização padrão para melhor uso/otimização de C++: como "#pragma once" em .hpp, para compilar somente uma vez o .hpp, "using namespace std" somente em .cpp, evitando uso de namespace global em .hpp e conflito com nomes de outras bibliotecas, somente bibliotecas necessárias (como vector), leitura de entrada de dados com "getline" e verificação de "end of file" (EOF), para evitar erros de buffer de entrada e leitura.
 
-## 🏹 tens:
+## 🏹 Itens:
 - Atualmente, existem 2 tipos de itens: empilhaveis (possível acumular 64 quantidades em um slot) e não empilháveis (ocupam um slot inteiro);
 - Empilháveis: flecha, poção, tocha;
 - Não empilháveis: espada, escudo, arco.
