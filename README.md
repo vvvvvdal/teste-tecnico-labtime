@@ -2,7 +2,7 @@
 ### Teste Técnico LabTIME
 
 ## 📹 Vídeo de Apresentação
-
+- Vídeo testando o programa e explicando no Minecraft como funciona as funções de adicionar, remover, trocar itens em um inventário e trocar itens entre dois inventários.
 | *Clique na imagem abaixo para ver o vídeo 👇* |
 | :---: |
 | <a href="https://www.youtube.com/watch?v=EvJXv69PBZs"><img src="https://img.youtube.com/vi/EvJXv69PBZs/maxresdefault.jpg" width="500"></a> |
