@@ -26,7 +26,7 @@ Item Inventario::buscar_item(string nome) {
     return Item();
 }
 
-// procura um slot desocupado no inventario
+// procura o primeiro slot desocupado no inventario
 int Inventario::encontrar_slot_vazio() {
     for(int i=0; i<tam_max_inventario; i++) {
 
@@ -192,7 +192,7 @@ void Inventario::remover_item(int posicao, int qtd) {
 
     if(verificar_posicao(posicao)) return;
     if(!verificar_ocupado(posicao)){
-        cout<<"Slot "<<posicao+1<<" vazio. Nao eh possível remover um item de um slot vazio"<<endl;
+        cout<<"Slot "<<posicao+1<<" vazio. Nao eh possivel remover um item de um slot vazio"<<endl;
         return;
     }
 

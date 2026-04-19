@@ -1,22 +1,30 @@
 # 💼 Sistema de Inventário
-### Teste Técnico Labtime
+### Teste Técnico LabTIME
+
+## 📹 Vídeo de Apresentação
+
+| *Clique na imagem abaixo para ver o vídeo 👇* |
+| :---: |
+| <a href="https://www.youtube.com/watch?v=EvJXv69PBZs"><img src="https://img.youtube.com/vi/EvJXv69PBZs/maxresdefault.jpg" width="500"></a> |
 
 ## 📖 O que é:
 - Um sistema de gerenciamento de inventario via terminal, em que o usuário pode criar um personagem e associar um inventário de itens à esse personagem.
 - É possível adicionar, remover e trocar itens no inventário do personagem.
 - Também é possível trocar itens entre dois personagens.
-- Minha maior referência foi o sistema de inventário do jogo Minecraft.
+- Minha maior referência foi o sistema de inventário do jogo Minecraft, por também ter um pack equivalente a 64.
 
 ## 📑 Organização
 - O sistema foi organizado separando cada classe (Item, Itens, Inventario, Personagem) em arquivos .hpp e .cpp separados. Além do arquivo main e das funções auxiliares. Modularização feita para melhor entendimento e manutenção do código.
 - O sistema usa POO em: classes, objetos, relação de composição (Personagem possui um Inventário), abstração, encapsulamento e variáveis/métodos estáticos (pertencentes à classe).
 - O sistema também usa structs, para armazenar variáveis que precisam operar juntas (como um slot que possui item existente/vazio e ocupação ocupado/desocupado), comentários resumidos em variáveis e funções, para facilitar entendimento, e definições de constantes globais, para melhor entendimento e visualização do código.
 - Além disso, organização padrão para melhor uso/otimização de C++: como "#pragma once" em .hpp, para compilar somente uma vez o .hpp, "using namespace std" somente em .cpp, evitando uso de namespace global em .hpp e conflito com nomes de outras bibliotecas, somente bibliotecas necessárias (como vector), leitura de entrada de dados com "getline" e verificação de "end of file" (EOF), para evitar erros de buffer de entrada e leitura.
+- Boas práticas de programação: early return, deixando o código mais limpo para visualização e tratando casos de erro logo no início, modularização, para facilitar manutenções futuras e entendimento do código, variáveis sendo passadas por referência (&) em funções, para evitar cópia de variáveis e gasto desnecessário de memória, constantes globais bem definidas, para evitar números "perdidos" pelo código e encapsulamento em POO, deixando atributos privados (além de métodos privados que o usuário não precisa acessar) e métodos públicos para manipular esses atributos.
 
-## 🏹 tens:
+## 🏹 Itens:
 - Atualmente, existem 2 tipos de itens: empilhaveis (possível acumular 64 quantidades em um slot) e não empilháveis (ocupam um slot inteiro);
 - Empilháveis: flecha, poção, tocha;
 - Não empilháveis: espada, escudo, arco.
+- OBS: itens vazios: Quando um slot está desocupado ele armazena um item com nome "vazio" e qtd 0. Achei essa opção melhor do que trabalhar com ponteiros que apontam para itens nulos (NULL). Também pesquisei sobre isso (no Gemini) e descobri que o jeito que eu fiz é melhor, principalmente em jogos, por causa da rápida velocidade para carregar coisas que já estão no cache de memória, além de evitar o problema de falha de segmentação (segmentation fault).
 
 ## 📥 Dinâmica de empilhamento (inserção/adição):
 - Ao adicionar um item (com nome do item e quantidade), é procurado um slot disponível para ocupar.
@@ -43,7 +51,7 @@
 - Atualmente, o sistema de busca de itens (na operação de adição) percorre todo o inventário com um laço for. Em um inventário muito grande, isso iria demorar bastante. No meu trabalho de AED1, tive a mesma questão. Então, a resposta é a mesma: poderia ser utilizado uma árvore binária de busca ou uma tabela hash, para a busca ser quase instantânea.
 
 ## 🤖 Uso de IA
-- Usei o Gemini Pro 3.1 para me ajudar a fazer esse projeto. Usei para entender melhor a possível atualização futura de sistema gerenciador de banco de dados, sobre qual usar pensando em consistência e latência, resolução de problemas na entrada de dados, usando "getline" e verificação de "EOF", organização das pastas do código, deixando .hpp em "include" e .cpp em "src", revisão de conceitos de POO, como relação de composição e métodos estáticos e verificação do README, para ver se eu realmente escrevi um README muito bom (mas não usei IA para escrever o README).
+- Usei o Gemini Pro 3.1 para me ajudar a fazer esse projeto. Usei para entender melhor a possível atualização futura de sistema gerenciador de banco de dados, sobre qual usar pensando em consistência e latência, resolução de problemas na entrada de dados, usando "getline" e verificação de "EOF", organização das pastas do código, deixando .hpp em "include" e .cpp em "src", revisão de conceitos de POO, como relação de composição e métodos estáticos, e verificação do README, para ver se eu realmente escrevi um README muito bom (mas não usei IA para escrever o README).
 
 ## 💻 Como compilar e executar
 
