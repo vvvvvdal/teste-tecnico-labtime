@@ -3,6 +3,8 @@
 ## 📹 Vídeo de Apresentação
 Vídeo testando o programa e explicando (com analogias ao Minecraft) como funcionam as funções de adicionar, remover, trocar itens no mesmo inventário e transferir itens entre dois inventários distintos.
 
+*Nota:* O vídeo está desatualizado em relação as novas refatorações de C++ moderno. Mas a lógica de funcionamento do sistema é a mesma apresentada no vídeo.
+
 | *Clique na imagem abaixo para ver o vídeo 👇* |
 | :---: |
 | <a href="https://www.youtube.com/watch?v=EvJXv69PBZs"><img src="https://img.youtube.com/vi/EvJXv69PBZs/maxresdefault.jpg" width="500"></a> |
