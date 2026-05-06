@@ -1,4 +1,4 @@
-# 💼 Sistema de Inventário | Teste Técnico LabTIME
+# 💼 Sistema de Inventário
 
 ## 📹 Vídeo de Apresentação
 Vídeo testando o programa e explicando (com analogias ao Minecraft) como funcionam as funções de adicionar, remover, trocar itens no mesmo inventário e transferir itens entre dois inventários distintos.
