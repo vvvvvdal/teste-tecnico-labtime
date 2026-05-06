@@ -1,15 +1,19 @@
 #include <iostream>
-#include "../include/personagem.hpp"
+#include "../include/auxiliares.hpp"
+
 using namespace std;
 
 int main() {
     
-    // Criação do personagem 1
-    Personagem per1 = Personagem::criar_personagem();
+    // variavel de controle local do seu jogo, substituindo a estatica/global
+    int qtd_total_personagens = 0;
+
+    // criacao do personagem 1 chamando a nossa interface do main
+    Personagem per1 = auxiliares::criar_personagem_menu(qtd_total_personagens);
     per1.print_inventario_personagem();
 
-    // Criação do personagem 2
-    Personagem per2 = Personagem::criar_personagem();
+    // criacao do personagem 2
+    Personagem per2 = auxiliares::criar_personagem_menu(qtd_total_personagens);
     per2.print_inventario_personagem();
 
     // adicionando 134 flechas no inventario do personagem 1 (indo 64 para o slot 1, 64 para o slot 2 e 6 para o slot 3)
@@ -24,7 +28,7 @@ int main() {
     per1.adicionar_item_inventario("Flecha", 35);
 
     // troca o slot 1 com o slot 8 do inventario do personagem 1 (nesse caso, troca 44 flechas com um slot vazio)
-    per1.trocar_itens_inventario(1,8);
+    per1.trocar_itens_inventario(1, 8);
     per1.print_inventario_personagem();
 
     // adiciona 2 arcos no inventario do personagem 1 (um vai para o slot 1 e um vai para o slot 4)
@@ -32,18 +36,18 @@ int main() {
     per1.print_inventario_personagem();
 
     // tentativa de remover qtd 5 do slot 10 do personagem 1. gera uma mensagem de erro de slot vazio.
-    per1.remover_item_inventario(10,5);
+    per1.remover_item_inventario(10, 5);
     per1.print_inventario_personagem();
 
     // tentativa de remover qtd negativa (-10) do slot 1 do personagem 1. gera uma mensagem de erro de qtd invalida.
-    per1.remover_item_inventario(1,-10);
+    per1.remover_item_inventario(1, -10);
     per1.print_inventario_personagem();
 
     // tentativa de remover qtd maior que a existente no slot. por ser um arco (nao empilhavel: somente 1 por slot). gera uma mensagem de erro de qtd invalida.
-    per1.remover_item_inventario(1,4);
+    per1.remover_item_inventario(1, 4);
     per1.print_inventario_personagem();
 
-    // adicionando 2 espadas ao inventario do personagem 2 (uma espada vai para o slot 1 e a outra vai para o proximo slot livre, q nesse caso é o 2)
+    // adicionando 2 espadas ao inventario do personagem 2 (uma espada vai para o slot 1 e a outra vai para o proximo slot livre, q nesse caso e o 2)
     per2.adicionar_item_inventario("Espada", 2);
     per2.print_inventario_personagem();
 
@@ -52,14 +56,14 @@ int main() {
     per2.print_inventario_personagem();
 
     // troca os slots 1 e 3 do inventario do personagem 2. nesse caso: troca espada do slot 1 com pocao do slot 3.
-    per2.trocar_itens_inventario(1,3);
+    per2.trocar_itens_inventario(1, 3);
     per2.print_inventario_personagem();
 
     // remove o item espada de tamanho unico (nao empilhavel: somente 1 por slot) do slot 3 do inventario do personagem 2. ficando um slot vazio.
-    per2.remover_item_inventario(3, TAM_MAX_UNICO);
+    per2.remover_item_inventario(3, Item::TAM_MAX_UNICO);
 
     // troca 2 slots entre os personagens 1 e 2. nesse caso, troca o slot 3 do personagem 1 (21 flechas) com o slot 2 do personagem 2 (espada).
-    // funciona exatamente como a função trocar_itens_inventario(), mas entre 2 personagens
+    // funciona exatamente como a funcao trocar_itens_inventario(), mas entre 2 personagens
     Personagem::trocar_itens_inventario_entre_personagens(per1, per2, 3, 2);
 
     // imprime o inventario do personagem 1

@@ -1,28 +1,40 @@
 #pragma once
 
-#define EMPILHAVEL 0
-#define NAO_EMPILHAVEL 1
-#define TIPO_INVALIDO -1
-#define TAM_MAX_UNICO 1
-#define TAM_MAX_PILHA 64
-#define TAM_NULO 0
-#define QTD_ITENS 6
-#define QTD_NULA 0
-
 #include <iostream>
+#include <string>
+
+enum class TipoItem {
+    Invalido = -1,
+    Empilhavel = 0,
+    NaoEmpilhavel = 1
+};
 
 class Item {
+public:
+    // constantes de tempo de compilação dentro do escopo da classe
+    static constexpr int TAM_MAX_UNICO = 1;
+    static constexpr int TAM_MAX_PILHA = 64;
+    static constexpr int TAM_NULO = 0;
+    static constexpr int QTD_ITENS = 6;
+    static constexpr int QTD_NULA = 0;
+
 private:
     std::string nome;
-    short int tipo; // empilhavel ou nao empilhavel
+    TipoItem tipo;
     int qtd;
-    int tam_max; // 64 se for empilhavel ou 1 se for nao empilhavel
+    int tam_max;
+
 public:
     Item();
-    Item(std::string nome, short int tipo, int qtd, int tam_max);
-    std::string get_nome();
-    short int get_tipo();
-    int get_qtd();
+    
+    // passagem de string por referência constante (const &)
+    Item(const std::string& nome, TipoItem tipo, int qtd, int tam_max);
+
+    // getters marcados como 'const' para garantir que nao modificam o objeto
+    // get_nome retorna const std::string& para evitar cópia da string ao ser chamada
+    const std::string& get_nome() const;
+    TipoItem get_tipo() const;
+    int get_qtd() const;
 
     void set_qtd(int quantidade);
 };

@@ -1,116 +1,142 @@
 #include "../include/auxiliares.hpp"
+#include <cctype>
+#include <cstdlib>
+
 using namespace std;
 
-// formata a posicao do slot -> no código: 0 a tamanho do inventario, na execução do usuario: 1 a tamanho do inventario
-void formatar_posicao(int &posicao) {
-    posicao -= 1;
-}
+namespace auxiliares {
 
-// lê um inteiro. repete a leitura se for um tipo diferente de inteiro (char, string, float)
-int ler_inteiro() {
-    string entrada;
-    int qtd;
-    
-    while(true) {
-        getline(cin, entrada);
-
-        if(cin.eof()) {
-            cout<<endl<<endl<<"Fim da leitura do arquivo teste.txt"<<endl;
-            exit(0); 
-        }
-        
-        if (entrada.length() > TAM_MAX_DIGITOS) {
-            cout<<endl<<"Numero muito grande." << endl;
-            cout<<"Digite novamente."<<endl;
-
-            continue;
-        }
-
-        bool eh_int = true;
-        for(int i=0; i<entrada.length(); i++) {
-            if(!isdigit(entrada[i])) {
-                eh_int = false;
-                break;
+    // formata o nome para o modelo: primeira letra de cada palavra maiuscula e o resto minuscula
+    void formatar_nome(string &nome) {
+        for(size_t i = 0; i < nome.length(); i++) {
+            if(i == 0 || nome[i-1] == ' ') {
+                nome[i] = toupper(nome[i]);
+            } else {
+                nome[i] = tolower(nome[i]);
             }
         }
+    }
+
+    // formata a posicao do slot (diminui 1 para ser usado em arrays que tem o primeiro índice como 0)
+    void formatar_posicao(int &posicao) {
+        posicao -= 1;
+    }
+
+    // le um inteiro. repete a leitura se for um tipo diferente
+    int ler_inteiro() {
+        string entrada;
+        int qtd;
         
-        if(eh_int) {
-            qtd = stoi(entrada);
+        while(true) {
+            getline(cin, entrada);
 
-            return qtd;
-        } else {
-            cout<<endl<<"O numero digitado foi invalido. Deve ser digitado um numero inteiro maior que 0."<<endl;
-            cout<<"Digite novamente."<<endl;
-        }
-    }
-}
-
-// lê o tamanho maximo do inventario. minimo de TAM_MIN_INVENTARIO e maximo de TAM_MAX_INVENTARIO
-int ler_tam_max_inventario() {
-    int tamanho;
-    
-    while(true) {
-        cout<<"Digite o tamanho maximo do inventario (min "<<TAM_MIN_INVENTARIO<<", max "<<TAM_MAX_INVENTARIO<<"): ";
-        tamanho = ler_inteiro();
-        
-        if(tamanho >= TAM_MIN_INVENTARIO && tamanho <= TAM_MAX_INVENTARIO) break;
-
-        cout<<endl<<"O tamanho minimo eh "<<TAM_MIN_INVENTARIO<<" e o maximo eh "<<TAM_MAX_INVENTARIO<<"."<<endl;
-        cout<<"Digite novamente."<<endl;
-    }
-
-    return tamanho;
-}
-
-// formata o nome para o modelo: primeira letra de cada palavra maiusculo e o resto minusculo
-void formatar_nome(string &nome) {
-    for(int i=0; i<nome.length(); i++) {
-        if(i == 0 || nome[i-1] == ' ') nome[i] = toupper(nome[i]);
-        else nome[i] = tolower(nome[i]);
-    }
-}
-
-// lê um nome. repete a leitura se for um tipo diferente de letras (char de 'A' a 'Z' e 'a' a 'z'), espaço (" ") ou vírgula(",")
-string ler_nome() {
-    string nome;
-
-    while(true) {
-        cout<<"Digite o nome: ";
-        getline(cin, nome);
-
-        if(cin.eof()) {
-            cout<<endl<<endl<<"Fim da leitura do arquivo teste.txt"<<endl;
-            exit(0); 
-        }
-
-        if(nome.length() > TAM_MAX_NOME) {
-            cout<<endl<<"Nome muito grande."<<endl;
-            cout<<"Digite novamente."<<endl;
+            if(cin.eof()) {
+                cout << endl << endl << "fim da leitura do arquivo teste.txt" << endl;
+                exit(0); 
+            }
             
-            continue;
+            // length() retorna size_t. entao TAM_MAX_DIGITOS eh convertido para esse mesmo formato, para garantir que a comparacao ocorra sem problemas.
+            if (entrada.length() > static_cast<size_t>(TAM_MAX_DIGITOS)) {
+                cout << endl << "numero muito grande." << endl;
+                cout << "digite novamente." << endl;
+                continue;
+            }
 
-        } else if(nome.length() < TAM_MIN_NOME) {
-            cout<<endl<<"Nome muito pequeno."<<endl;
-            cout<<"Digite novamente."<<endl;
-
-            continue;
-        }
-
-        bool eh_palavra = true;
-
-        for(char c: nome) {
-            if(!isalpha(c) && c != ' ' && c != ',') {
-                cout<<endl<<"Somente letras sao permitidas no nome."<<endl;
-                cout<<"Digite novamente."<<endl;
-
-                eh_palavra = false;
-                break;
+            bool eh_int = true;
+            for(char c : entrada) { // loop q percore toda a entrada. para se encontrar um caractere diferente de numero.
+                if(!isdigit(c)) {
+                    eh_int = false;
+                    break;
+                }
+            }
+            
+            // previne que uma entrada vazia passe pelo teste antes de tentar o stoi
+            if(eh_int && !entrada.empty()) {
+                qtd = stoi(entrada);
+                return qtd;
+            } else {
+                cout << endl << "o numero digitado foi invalido. deve ser digitado um numero inteiro maior que 0." << endl;
+                cout << "digite novamente." << endl;
             }
         }
+    }
 
-        if(eh_palavra) {
-            formatar_nome(nome);
-            return nome;
+    // le o tamanho maximo do inventario
+    int ler_tam_max_inventario() {
+        int tamanho;
+        
+        while(true) {
+            cout << "digite o tamanho maximo do inventario (min " << TAM_MIN_INVENTARIO << ", max " << TAM_MAX_INVENTARIO << "): ";
+            tamanho = ler_inteiro();
+            
+            if(tamanho >= TAM_MIN_INVENTARIO && tamanho <= TAM_MAX_INVENTARIO) {
+                break;
+            }
+
+            cout << endl << "o tamanho minimo eh " << TAM_MIN_INVENTARIO << " e o maximo eh " << TAM_MAX_INVENTARIO << "." << endl;
+            cout << "digite novamente." << endl;
         }
+
+        return tamanho;
+    }
+
+    // le um nome. repete a leitura se fugir do escopo de letras, espaco ou virgula
+    string ler_nome() {
+        string nome;
+
+        while(true) {
+            cout << "digite o nome: ";
+            getline(cin, nome);
+
+            if(cin.eof()) {
+                cout << endl << endl << "fim da leitura do arquivo teste.txt" << endl;
+                exit(0); 
+            }
+
+            if(nome.length() > static_cast<size_t>(TAM_MAX_NOME)) {
+                cout << endl << "nome muito grande." << endl;
+                cout << "digite novamente." << endl;
+                continue;
+
+            } else if(nome.length() < static_cast<size_t>(TAM_MIN_NOME)) {
+                cout << endl << "nome muito pequeno." << endl;
+                cout << "digite novamente." << endl;
+                continue;
+            }
+
+            bool eh_palavra = true;
+
+            for(char c : nome) { // loop q percorre todo o nome. para se encontrar caractere diferente de letra, espaco ou virgula.
+                if(!isalpha(c) && c != ' ' && c != ',') {
+                    cout << endl << "somente letras sao permitidas no nome." << endl;
+                    cout << "digite novamente." << endl;
+
+                    eh_palavra = false;
+                    break;
+                }
+            }
+
+            if(eh_palavra) {
+                formatar_nome(nome);
+                return nome;
+            }
+        }
+    }
+
+    // funcao que cria um novo personagem.
+    Personagem criar_personagem_menu(int& qtd_personagens) {
+        if(qtd_personagens % 2 == 1) cout << endl;
+
+        cout << "-<- Criacao do Personagem " << qtd_personagens + 1 << " ->-" << endl;
+
+        cout << "Digite a seguir o nome do seu personagem" << endl;
+        string nome_personagem = auxiliares::ler_nome();
+
+        cout << "Digite a seguir o tamanho do inventario do seu personagem" << endl;
+        int tam_inventario_personagem = auxiliares::ler_tam_max_inventario();
+
+        qtd_personagens++; 
+        
+        return Personagem(nome_personagem, tam_inventario_personagem);
     }
 }

@@ -1,49 +1,47 @@
 #pragma once
 
-#define OCUPADO 1
-#define DESOCUPADO 0
-#define POSICAO_INVALIDA 1
-#define POSICAO_VALIDA 0
-#define SLOT_INVALIDO -1
-
 #include <iostream>
 #include <vector>
-#include "auxiliares.hpp"
 #include "item.hpp"
 #include "itens.hpp"
 
-// struct de um slot
-typedef struct {
-    Item item; // item (existente ou vazio)
-    int ocupado; // ocupado (ocupado ou desocupado)
-} Slot;
 
-class Inventario{
+// struct de um slot
+struct Slot {
+    Item item; 
+    bool ocupado = false; // (desocupado = false, ocupado = true. é inicializado como desocupado)
+};
+
+class Inventario {
 private:
-    std::vector<Slot> slots; // vetor da struct Slot
+    static constexpr int SLOT_INVALIDO = -1; // constante de slot invalido
+    
+    std::vector<Slot> slots;
     Itens itens_inventario;
-    int tam_max_inventario; // tamanho maximo do inventario escolhido pelo usuario (entre TAM_MIN_INVENTARIO e TAM_MAX_INVENTARIO)
+    int tam_max_inventario;
+
+    void verificar_qtd_negativa(const Item& item, int posicao, int qtd) const;
     
-    void verificar_qtd_negativa(Item &item, int posicao,int qtd);
-    
-    Item buscar_item(std::string nome);
-    int encontrar_slot_vazio();
-    void distribuir_sobra(Item &item_base, int sobra);
+    Item buscar_item(const std::string& nome) const;
+    int encontrar_slot_vazio() const;
+    void distribuir_sobra(const Item& item_base, int sobra);
     
 public:
     Inventario(int tam_max_inventario);
-
-    short int verificar_posicao(int posicao);
-    short int verificar_ocupado(int posicao);
+    bool verificar_posicao(int posicao) const;
+    bool verificar_ocupado(int posicao) const;
+    
+    // const Slot& e const Item& para evitar copia de variaveis
     void esvaziar_slot(int posicao);
-    void ocupar_slot(Item &item, int posicao);
+    void ocupar_slot(const Item& item, int posicao);
 
-    Slot get_slot(int posicao);
-    void set_slot(Slot &novo_slot, int posicao);
-    int get_tam_max_inventario();
+    const Slot& get_slot(int posicao) const;
+    void set_slot(const Slot& novo_slot, int posicao);
+    int get_tam_max_inventario() const;
 
-    void print_inventario();
-    void adicionar_item(std::string nome, int qtd);
+    void print_inventario() const;
+    
+    void adicionar_item(const std::string& nome, int qtd);
     void remover_item(int posicao, int qtd);
     void trocar_item(int posicao1, int posicao2);
 };

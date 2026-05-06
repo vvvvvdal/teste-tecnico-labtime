@@ -3,8 +3,13 @@
 #include <array>
 #include "item.hpp"
 
-class Itens{
+class Itens {
+private:
+    // array da qtd de itens existentes no programa
+    std::array<Item, Item::QTD_ITENS> itens_array; 
+
 public:
-    std::array<Item,6> itens; // array dos 6 itens existentes no programa
     Itens();
+
+    const Item& get_item(int index) const;
 };
