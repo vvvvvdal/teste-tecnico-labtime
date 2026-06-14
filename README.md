@@ -1,6 +1,6 @@
-# 💼 Sistema de Inventário
+# Sistema de Inventário
 
-## 📹 Vídeo de Apresentação
+## Vídeo de Apresentação
 Vídeo testando o programa e explicando (com analogias ao Minecraft) como funcionam as funções de adicionar, remover, trocar itens no mesmo inventário e transferir itens entre dois inventários distintos.
 
 *Nota:* O vídeo está desatualizado em relação as novas refatorações de C++ moderno. Mas a lógica de funcionamento do sistema é a mesma apresentada no vídeo.
@@ -11,7 +11,7 @@ Vídeo testando o programa e explicando (com analogias ao Minecraft) como funcio
 
 ---
 
-## 📖 Sobre o Projeto
+## Sobre o Projeto
 Um sistema de gerenciamento de inventário via terminal, desenvolvido em **C++**. O usuário pode criar múltiplos personagens, atribuir capacidades de inventário personalizadas e gerenciar recursos de forma dinâmica.
 
 **Principais Funcionalidades:**
@@ -22,7 +22,7 @@ Um sistema de gerenciamento de inventário via terminal, desenvolvido em **C++**
 
 ---
 
-## 🏗️ Arquitetura e C++ Moderno (Refatoração)
+## Arquitetura e C++ Moderno (Refatoração)
 O projeto passou por uma rigorosa evolução arquitetural focada em boas práticas de Engenharia de Software, **C++ Moderno** e **Programação Orientada a Objetos (POO)**:
 
 - **Abstrações Modernas:** Substituição completa de macros herdadas do C (`#define`) por constantes resolvidas em tempo de compilação (`constexpr`) e tipagem forte (`enum class`), prevenindo bugs silenciosos de escopo.
@@ -34,42 +34,42 @@ O projeto passou por uma rigorosa evolução arquitetural focada em boas prátic
 
 ---
 
-## 🏹 Sistema de Itens
+## Sistema de Itens
 Atualmente, a base de dados suporta 2 categorias de itens:
 1. **Empilháveis** (Ocupam até 64 unidades por slot): Flecha, Poção, Tocha.
 2. **Não Empilháveis** (Ocupam o slot inteiro de forma única): Espada, Escudo, Arco.
 
-> 💡 **Design Pattern para Espaços Vazios:** > Quando um slot está desocupado, ele armazena um objeto do tipo "Vazio" com quantidade 0, ao invés de utilizar ponteiros nulos (`NULL` ou `nullptr`). Em sistemas voltados para jogos, essa abordagem maximiza a performance devido à localidade de cache (Cache Hit) e mitiga completamente os riscos de *Segmentation Fault*.
+> **Design Pattern para Espaços Vazios:** > Quando um slot está desocupado, ele armazena um objeto do tipo "Vazio" com quantidade 0, ao invés de utilizar ponteiros nulos (`NULL` ou `nullptr`). Em sistemas voltados para jogos, essa abordagem maximiza a performance devido à localidade de cache (Cache Hit) e mitiga completamente os riscos de *Segmentation Fault*.
 
 ---
 
-## ⚙️ Dinâmicas do Inventário
+## Dinâmicas do Inventário
 
-### 📥 Adição e Empilhamento
+### Adição e Empilhamento
 Ao inserir um item, o algoritmo otimiza o espaço disponível:
 - **Itens Empilháveis:** O sistema varre o inventário buscando slots que já contenham o mesmo item para preenchê-los até o limite máximo (64). Caso reste quantidade excedente (função `distribuir_sobra`), o sistema localiza os próximos slots vazios e distribui o restante do pacote automaticamente (via loop).
 - **Itens Não Empilháveis:** O sistema busca o primeiro slot vazio e o ocupa. Quantidades excedentes preenchem os próximos slots subsequentes.
 - *Nota:* Se a capacidade máxima do inventário for atingida, a quantidade excedente do item é processada como "descartada".
 
-### 📤 Remoção
+### Remoção
 A lógica de subtração realiza tratamento de erros (Early Return) para garantir a integridade dos dados:
 - Verifica se a quantidade solicitada é maior que a existente ou se é um valor negativo.
 - Se a quantidade removida for igual ao total do slot, o espaço tem seu estado formatado de volta para "Vazio".
 - Se for menor, ocorre a subtração aritmética da quantidade.
 
-### 🔀 Trocas (Swap)
+### Trocas (Swap)
 - **Interna:** Ocorre a inversão de memória entre dois slots do mesmo inventário. Suporta perfeitamente a movimentação de um item para um espaço vazio.
 - **Externa:** Permite cruzar dados entre a classe de dois personagens diferentes, validando posições e ocupações de ambos os lados de forma segura antes de realizar o `swap`.
 
 ---
 
-## 🚀 Melhorias Futuras
+## Melhorias Futuras
 - **Persistência de Dados:** Para escalar a quantidade de itens, o ideal seria adotar um Banco de Dados. Pensando em alta consistência para um ambiente multiplayer, um PostgreSQL seria ideal. Para otimizar a latência em tempo real, o uso de **Redis** na memória RAM sincronizando em *background* com um banco relacional seria a arquitetura definitiva.
 - **Otimização de Busca (Time Complexity):** Atualmente, a busca (`buscar_item`) varre o inventário de forma linear (`O(n)`). Para inventários de grande escala (MMORPGs), isso causaria gargalos. A solução seria refatorar a estrutura de busca implementando uma **Tabela Hash** (Hash Map) ou uma **Árvore Binária de Busca**, reduzindo o tempo de consulta para `O(1)` ou `O(log n)`.
 
 ---
 
-## 🤖 Uso de IA
+## Uso de IA
 Utilizei ferramentas de IA (Google Gemini) como suporte ao estudo durante o desenvolvimento deste projeto. O uso foi focado em:
 - Arquitetura de software: discussão sobre a transição de bancos de dados visando baixa latência vs consistência.
 - Resolução de bugs e fluxos de `stdin/stdout` em C++ (limpeza de buffer, validações com `getline` e `EOF`).
@@ -77,7 +77,7 @@ Utilizei ferramentas de IA (Google Gemini) como suporte ao estudo durante o dese
 
 ---
 
-## 💻 Como Compilar e Executar
+## Como Compilar e Executar
 
 Para compilar o projeto em sua máquina local, certifique-se de ter um compilador C++ (como o `g++` do GCC) instalado.
 
